@@ -1,19 +1,20 @@
 // src/App.jsx
 import { useEffect, useState } from "react";
-import recipesData from "./data/recipes.json"; // this is an object with a "recipes" property
+import recipesData from "./data/recipes.json"; 
 import { Card, CardContent } from "./components/Card";
 import { Button } from "./components/Button";
 import { Input } from "./components/Input";
 
 export default function App() {
-  const [recipes, setRecipes] = useState([]);  // recipes must be an array
+  const [recipes, setRecipes] = useState([]);  
   const [search, setSearch] = useState("");
   const [favorites, setFavorites] = useState([]);
 
   useEffect(() => {
-    setRecipes(recipesData.recipes); // <-- fix here! access the array inside object
+    setRecipes(recipesData.recipes); 
   }, []);
 
+    // Toggle favorites: add or remove recipe sa favorites
   const toggleFavorite = (recipe) => {
     setFavorites((prev) =>
       prev.find((r) => r.id === recipe.id)
@@ -21,7 +22,7 @@ export default function App() {
         : [...prev, recipe]
     );
   };
-
+// Filter recipes base sa search input (title or ingredients)
   const filteredRecipes = recipes.filter(
     (r) =>
       r.title.toLowerCase().includes(search.toLowerCase()) ||
