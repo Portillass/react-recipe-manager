@@ -74,7 +74,7 @@ export default function App() {
             <Card key={fav.id}>
               <CardContent>
                 <h3 className="font-semibold">{fav.title}</h3>
-                <p>⏱ {fav.cookingTime} mins</p>
+                <p> {fav.cookingTime} mins</p>
               </CardContent>
             </Card>
           ))}

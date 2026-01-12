@@ -33,3 +33,11 @@ Copy code
 npm start
 The app will run at http://localhost:3000.
 
+## 📸 Preview
+
+![Form Preview](./src/assets/1.png)
+
+---
+![Form Preview](./src/assets/image.png)
+
+---
