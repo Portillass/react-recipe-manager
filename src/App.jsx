@@ -1,35 +1,84 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+// src/App.jsx
+import { useEffect, useState } from "react";
+import recipesData from "./data/recipes.json"; // this is an object with a "recipes" property
+import { Card, CardContent } from "./components/Card";
+import { Button } from "./components/Button";
+import { Input } from "./components/Input";
 
-function App() {
-  const [count, setCount] = useState(0)
+export default function App() {
+  const [recipes, setRecipes] = useState([]);  // recipes must be an array
+  const [search, setSearch] = useState("");
+  const [favorites, setFavorites] = useState([]);
+
+  useEffect(() => {
+    setRecipes(recipesData.recipes); // <-- fix here! access the array inside object
+  }, []);
+
+  const toggleFavorite = (recipe) => {
+    setFavorites((prev) =>
+      prev.find((r) => r.id === recipe.id)
+        ? prev.filter((r) => r.id !== recipe.id)
+        : [...prev, recipe]
+    );
+  };
+
+  const filteredRecipes = recipes.filter(
+    (r) =>
+      r.title.toLowerCase().includes(search.toLowerCase()) ||
+      r.ingredients.join(" ").toLowerCase().includes(search.toLowerCase())
+  );
 
   return (
-    <>
-      <div>
-        <a href="https://vite.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.jsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
-  )
-}
+    <div className="p-6 max-w-5xl mx-auto">
+      <h1 className="text-3xl font-bold mb-4">🍽 Recipe Manager</h1>
 
-export default App
+      <Input
+        placeholder="Search by name or ingredient..."
+        value={search}
+        onChange={(e) => setSearch(e.target.value)}
+        className="mb-6"
+      />
+
+      <div className="grid md:grid-cols-3 gap-4">
+        {filteredRecipes.map((recipe) => (
+          <Card key={recipe.id}>
+            <CardContent className="p-4">
+              <img
+                src={recipe.image}
+                alt={recipe.title}
+                className="rounded mb-2"
+              />
+              <h2 className="font-semibold">{recipe.title}</h2>
+              <p>⏱ {recipe.cookingTime} mins</p>
+
+              <Button
+                className="mt-2"
+                onClick={() => toggleFavorite(recipe)}
+              >
+                {favorites.find((f) => f.id === recipe.id)
+                  ? "Remove Favorite"
+                  : "Add Favorite"}
+              </Button>
+            </CardContent>
+          </Card>
+        ))}
+      </div>
+
+      <h2 className="text-2xl font-bold mt-8">Favorites</h2>
+      {favorites.length === 0 ? (
+        <p>No favorites yet.</p>
+      ) : (
+        <div className="grid md:grid-cols-3 gap-4 mt-4">
+          {favorites.map((fav) => (
+            <Card key={fav.id}>
+              <CardContent>
+                <h3 className="font-semibold">{fav.title}</h3>
+                <p>⏱ {fav.cookingTime} mins</p>
+              </CardContent>
+            </Card>
+          ))}
+        </div>
+      )}
+    </div>
+  );
+}
