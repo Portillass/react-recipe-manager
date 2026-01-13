@@ -31,7 +31,7 @@ export default function App() {
 
   return (
     <div className="p-6 max-w-5xl mx-auto">
-      <h1 className="text-3xl font-bold mb-4">🍽 Recipe Manager</h1>
+      <h1 className="text-3xl font-bold mb-4"> Recipe Manager</h1>
 
       <Input
         placeholder="Search by name or ingredient..."
@@ -50,7 +50,7 @@ export default function App() {
                 className="rounded mb-2"
               />
               <h2 className="font-semibold">{recipe.title}</h2>
-              <p>⏱ {recipe.cookingTime} mins</p>
+              <p> {recipe.cookingTime} mins</p>
 
               <Button
                 className="mt-2"
